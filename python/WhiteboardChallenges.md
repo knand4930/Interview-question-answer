@@ -58,14 +58,40 @@ class URLShortener:
 
 ### 3. Implement a distributed rate limiter
 
-Use a sliding window counter stored in Redis.
+Use a sliding window counter stored in Redis sorted sets to limit requests across distributed systems.
 
 ```python
-# Redis-based distributed rate limiter using sorted sets (pseudo-code)
-# ZADD key current_timestamp current_timestamp
-# ZREMRANGEBYSCORE key 0 (current_timestamp - window)
-# ZCARD key -> current count
-# Allow if count < limit
+import time
+import redis
+
+class DistributedRateLimiter:
+    def __init__(self, redis_client, key_prefix='rate:', window_seconds=60, limit=100):
+        self.client = redis_client
+        self.window = window_seconds
+        self.limit = limit
+        self.key_prefix = key_prefix
+
+    def allow_request(self, user_id):
+        key = f"{self.key_prefix}{user_id}"
+        now = int(time.time() * 1000)  # current time in ms
+        window_start = now - self.window * 1000
+
+        pipe = self.client.pipeline()
+        pipe.zremrangebyscore(key, 0, window_start)
+        pipe.zadd(key, {str(now): now})
+        pipe.zcard(key)
+        pipe.expire(key, self.window)
+        _, _, request_count, _ = pipe.execute()
+
+        return request_count <= self.limit
+
+# Usage example:
+# redis_client = redis.StrictRedis(host='localhost', port=6379, db=0)
+# limiter = DistributedRateLimiter(redis_client)
+# if limiter.allow_request("user123"):
+#     print("Request allowed")
+# else:
+#     print("Rate limit exceeded")
 ```
 
 ---
@@ -218,11 +244,45 @@ class SlidingWindowRateLimiter:
 ### 10. Design a recommendation algorithm with collaborative filtering
 
 ```python
-# Pseudo-logic:
-# 1. Create user-item rating matrix
-# 2. Compute similarity between users (cosine, Pearson)
-# 3. Predict rating using k-nearest neighbors
-# 4. Recommend items with highest predicted ratings
+import numpy as np
+from sklearn.metrics.pairwise import cosine_similarity
+
+# Sample user-item matrix
+# Rows = users, Columns = items
+ratings = np.array([
+    [5, 3, 0, 1],
+    [4, 0, 0, 1],
+    [1, 1, 0, 5],
+    [0, 0, 5, 4],
+    [0, 0, 4, 0],
+])
+
+# Step 1: Compute similarity matrix between users
+user_similarity = cosine_similarity(ratings)
+
+# Step 2: Predict missing ratings using weighted sum of similarities
+# Predict rating for user 0, item 2
+user_index = 0
+item_index = 2
+
+# Get all other users' ratings for this item
+item_ratings = ratings[:, item_index]
+similarities = user_similarity[user_index]
+
+# Exclude self-rating and users who haven't rated the item
+mask = (item_ratings != 0) & (np.arange(len(ratings)) != user_index)
+
+if np.any(mask):
+    weighted_sum = np.dot(similarities[mask], item_ratings[mask])
+    similarity_sum = np.sum(similarities[mask])
+    predicted_rating = weighted_sum / similarity_sum
+else:
+    predicted_rating = 0  # fallback
+
+print(f"Predicted rating for user {user_index} on item {item_index}: {predicted_rating:.2f}")
+
+# Step 3: Recommend top-N items with highest predicted ratings
+# Iterate over all unrated items and compute predictions
 ```
 
 ---
