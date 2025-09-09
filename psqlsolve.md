@@ -1,123 +1,55 @@
-# SQL Queries and Examples
+# SQL Practice Questions & Solutions
 
-This document provides a series of SQL queries and examples based on the provided database schema and questions. Each section includes the query, its purpose, and the expected output. The database includes tables for `employee`, `products`, `customers`, `orders`, and a hypothetical `manager` table.
+This repository contains a comprehensive collection of SQL practice questions with solutions, covering basic to advanced database operations.
 
 ## Table of Contents
-1. [Database Schema](#database-schema)
-2. [Queries](#queries)
-    - [Question 1: Retrieve all employee names and their salaries](#question-1-retrieve-all-employee-names-and-their-salaries)
-    - [Question 2: Find all products in the 'Electronics' category](#question-2-find-all-products-in-the-electronics-category)
-    - [Question 3: Get all employees hired after 2019-01-01](#question-3-get-all-employees-hired-after-2019-01-01)
-    - [Question 4: List all customers from the USA and Canada](#question-4-list-all-customers-from-the-usa-and-canada)
-    - [Question 5: Find products with stock less than 100](#question-5-find-products-with-stock-less-than-100)
-    - [Question 6: Get employees with salary between 70000 and 85000](#question-6-get-employees-with-salary-between-70000-and-85000)
-    - [Question 7: Find all orders placed in January 2024](#question-7-find-all-orders-placed-in-january-2024)
-    - [Question 8: List products ordered by price in descending order](#question-8-list-products-ordered-by-price-in-descending-order)
-    - [Question 9: Find the top 3 highest paid employees](#question-9-find-the-top-3-highest-paid-employees)
-    - [Question 10: Get unique countries from the customers table](#question-10-get-unique-countries-from-the-customers-table)
-    - [Question 11: Count the total number of employees](#question-11-count-the-total-number-of-employees)
-    - [Question 12: Find the average price of all products](#question-12-find-the-average-price-of-all-products)
-    - [Question 13: Get the maximum and minimum salary](#question-13-get-the-maximum-and-minimum-salary)
-    - [Question 14: Calculate the total sales amount](#question-14-calculate-the-total-sales-amount)
-    - [Question 15: Count products by category](#question-15-count-products-by-category)
-    - [Question 16: Find the average salary by department](#question-16-find-the-average-salary-by-department)
-    - [Question 17: Count the number of orders per customer](#question-17-count-the-number-of-orders-per-customer)
-    - [Question 18: Find the total inventory value](#question-18-find-the-total-inventory-value)
-    - [Question 19: Get the earliest and latest hire dates](#question-19-get-the-earliest-and-latest-hire-dates)
-    - [Question 20: Find the average order amount](#question-20-find-the-average-order-amount)
-    - [Question 21: List departments with more than 1 employee](#question-21-list-departments-with-more-than-1-employee)
-    - [Question 22: Show categories with average price above 200](#question-22-show-categories-with-average-price-above-200)
-    - [Question 23: Find customers who have spent more than 500 in total](#question-23-find-customers-who-have-spent-more-than-500-in-total)
-    - [Question 24: Show departments where the average salary is above 80000](#question-24-show-departments-where-the-average-salary-is-above-80000)
-    - [Question 25: List categories with total stock less than 200](#question-25-list-categories-with-total-stock-less-than-200)
-    - [Question 26: Find the month with the highest total sales in 2024](#question-26-find-the-month-with-the-highest-total-sales-in-2024)
-    - [Question 27: Show departments with employees hired in different years](#question-27-show-departments-with-employees-hired-in-different-years)
-    - [Question 28: Find the category with the highest maximum price](#question-28-find-the-category-with-the-highest-maximum-price)
-    - [Question 29: List customers with more than 1 order](#question-29-list-customers-with-more-than-1-order)
-    - [Question 30: Find departments where all employees earn more than 60000](#question-30-find-departments-where-all-employees-earn-more-than-60000)
-    - [Question 31: Show order details with customer names](#question-31-show-order-details-with-customer-names)
-    - [Question 32: Display orders with product names and prices](#question-32-display-orders-with-product-names-and-prices)
-    - [Question 33: List employees with their manager names](#question-33-list-employees-with-their-manager-names)
-    - [Question 34: Show complete order information with customer and product details](#question-34-show-complete-order-information-with-customer-and-product-details)
-    - [Question 35: List all customers and their order count](#question-35-list-all-customers-and-their-order-count)
-    - [Question 36: Show products and their total sales quantity](#question-36-show-products-and-their-total-sales-quantity)
-    - [Question 37: Find employees who earn more than their department's average salary](#question-37-find-employees-who-earn-more-than-their-departments-average-salary)
-    - [Question 38: List customers from USA who have placed orders](#question-38-list-customers-from-usa-who-have-placed-orders)
-    - [Question 39: Find products that have never been ordered](#question-39-find-products-that-have-never-been-ordered)
-    - [Question 40: Show the salary difference between each employee and the highest paid employee in their department](#question-40-show-the-salary-difference-between-each-employee-and-the-highest-paid-employee-in-their-department)
-
----
+- [Database Schema](#database-schema)
+- [Basic Queries (Questions 1-10)](#basic-queries)
+- [Aggregation Functions (Questions 11-20)](#aggregation-functions)
+- [GROUP BY and HAVING (Questions 21-30)](#group-by-and-having)
+- [JOIN Operations (Questions 31-40)](#join-operations)
+- [UPDATE Operations (Questions 41-50)](#update-operations)
+- [Advanced Queries (Questions 51-58)](#advanced-queries)
 
 ## Database Schema
 
-### Employee Table
-```sql
-CREATE TABLE employee (
-    emp_id INT UNIQUE NOT NULL,
-    name VARCHAR(500) NOT NULL,
-    department VARCHAR(500) NOT NULL,
-    salary INT NOT NULL,
-    hire_date DATE NOT NULL,
-    manager_id INT
-);
+### Tables Structure
 
-INSERT INTO employee (emp_id, name, department, salary, hire_date, manager_id)
-VALUES
-    (1, 'John Smith', 'IT', 75000, '2020-01-15', 5),
-    (2, 'Sarah Johnson', 'HR', 65000, '2019-03-20', 6),
-    (3, 'Mike Wilson', 'IT', 80000, '2018-07-10', 5),
-    (4, 'Emily Davis', 'Finance', 70000, '2021-02-28', 7),
-    (5, 'Robert Brown', 'IT', 95000, '2017-05-15', NULL),
-    (6, 'Lisa Garcia', 'HR', 85000, '2016-09-12', NULL),
-    (7, 'David Miller', 'Finance', 90000, '2019-11-08', NULL);
+#### Employees Table
+```sql
+CREATE TABLE employee(
+    emp_id int unique not null,
+    name varchar(500) not null,
+    department varchar(500) not null,
+    salary int not null,
+    hire_date date not null,
+    manager_id int
+);
 ```
 
-### Products Table
+#### Products Table
 ```sql
-CREATE TABLE products (
-    product_id INT,
-    name VARCHAR(300),
-    category VARCHAR(40),
+CREATE TABLE products(
+    product_id int,
+    name varchar(300),
+    category varchar(40),
     price NUMERIC(6, 2),
-    stock INT
+    stock int
 );
-
-ALTER TABLE products
-ALTER COLUMN product_id TYPE INT,
-ADD CONSTRAINT products_product_id_unique UNIQUE (product_id);
-
-INSERT INTO products (product_id, name, category, price, stock)
-VALUES
-    (1, 'Laptop', 'Electronics', 999.99, 50),
-    (2, 'Mouse', 'Electronics', 25.99, 200),
-    (3, 'Chair', 'Furniture', 149.99, 75),
-    (4, 'Desk', 'Furniture', 299.99, 30),
-    (5, 'Monitor', 'Electronics', 249.99, 100);
 ```
 
-### Customers Table
+#### Customers Table
 ```sql
 CREATE TABLE customers (
     customer_id SERIAL PRIMARY KEY,
     name VARCHAR(500) NOT NULL,
     email VARCHAR(255) UNIQUE NOT NULL,
     city VARCHAR(50),
-    country VARCHAR(50),
-    CONSTRAINT email_check CHECK (
-        email ~* '^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}$'
-    )
+    country VARCHAR(50)
 );
-
-INSERT INTO customers (customer_id, name, email, city, country)
-VALUES
-    (1, 'Alice Brown', 'alice@email.com', 'New York', 'USA'),
-    (2, 'Bob Green', 'bob@email.com', 'London', 'UK'),
-    (3, 'Carol White', 'carol@email.com', 'Toronto', 'Canada'),
-    (4, 'David Black', 'david@email.com', 'Sydney', 'Australia'),
-    (5, 'Eve Gray', 'eve@email.com', 'Paris', 'France');
 ```
 
-### Orders Table
+#### Orders Table
 ```sql
 CREATE TABLE orders (
     order_id INT UNIQUE,
@@ -129,59 +61,59 @@ CREATE TABLE orders (
     FOREIGN KEY (customer_id) REFERENCES customers(customer_id),
     FOREIGN KEY (product_id) REFERENCES products(product_id)
 );
-
-INSERT INTO orders (order_id, customer_id, product_id, quantity, order_date, total_amount)
-VALUES
-    (1, 1, 1, 1, '2024-01-15', 999.99),
-    (2, 2, 2, 2, '2024-01-16', 51.98),
-    (3, 3, 3, 1, '2024-01-17', 149.99),
-    (4, 1, 5, 2, '2024-01-18', 499.98),
-    (5, 4, 4, 1, '2024-01-19', 299.99);
 ```
 
-### Manager Table (Hypothetical for Question 33)
+#### Departments Table
 ```sql
-CREATE TABLE manager (
-    manager_id INT PRIMARY KEY,
-    name VARCHAR(100) NOT NULL,
-    department VARCHAR(50),
-    email VARCHAR(100),
-    phone VARCHAR(20)
+CREATE TABLE departments(
+    dept_id int,
+    dept_name varchar(200),
+    budget int,
+    location varchar(200)
 );
-
-ALTER TABLE employee
-ADD CONSTRAINT fk_manager
-FOREIGN KEY (manager_id)
-REFERENCES manager(manager_id);
 ```
 
----
-
-## Queries
-
-### Question 1: Retrieve all employee names and their salaries
-**Task**: Retrieve all employee names and their salaries from the `employee` table.  
-**Expected Output**: List of employee names and their salaries.
-
+#### Sales Table
 ```sql
-SELECT name, salary AS salaries
-FROM employee;
+CREATE TABLE sales (
+    sale_id INT,
+    employee_id INT,
+    product_id INT,
+    customer_id INT,
+    sale_date TIMESTAMP,
+    quantity INT,
+    unit_price NUMERIC(10,2)
+);
 ```
 
-### Question 2: Find all products in the 'Electronics' category
-**Task**: Find all products in the 'Electronics' category from the `products` table.  
-**Expected Output**: List of product names and their prices in the 'Electronics' category.
-
+#### Inventory Movements Table
 ```sql
-SELECT name, price
-FROM products
-WHERE category = 'Electronics';
+CREATE TABLE inventory_movements (
+    movement_id INT PRIMARY KEY,
+    product_id INT,
+    movement_type VARCHAR(10),  -- IN or OUT
+    quantity INT,
+    movement_date DATE,
+    reason VARCHAR(255)
+);
 ```
 
-### Question 3: Get all employees hired after 2019-01-01
-**Task**: Retrieve employees hired after January 1, 2019.  
-**Expected Output**: List of employee names, hire dates, and departments, ordered by hire date descending.
+## Basic Queries
 
+### Question 1: Retrieve Employee Names and Salaries
+**Task:** Get all employee names and their salaries
+```sql
+SELECT name, salary as salaries FROM employee;
+```
+
+### Question 2: Find Electronics Products
+**Task:** Find all products in the 'Electronics' category
+```sql
+SELECT name, price FROM products WHERE category='Electronics';
+```
+
+### Question 3: Employees Hired After 2019
+**Task:** Get all employees hired after 2019-01-01
 ```sql
 SELECT name, hire_date, department
 FROM employee
@@ -189,60 +121,44 @@ WHERE hire_date > '2019-01-01'
 ORDER BY hire_date DESC;
 ```
 
-### Question 4: List all customers from the USA and Canada
-**Task**: List all customers from the USA and Canada.  
-**Expected Output**: List of customer names, cities, and countries.
-
+### Question 4: Customers from USA and Canada
+**Task:** List all customers from the USA and Canada
 ```sql
 SELECT name, city, country
 FROM customers
 WHERE country IN ('USA', 'Canada');
 ```
 
-### Question 5: Find products with stock less than 100
-**Task**: Find products with stock less than 100.  
-**Expected Output**: List of product names and their stock quantities.
-
+### Question 5: Products with Low Stock
+**Task:** Find products with stock less than 100
 ```sql
-SELECT name, stock
-FROM products
-WHERE stock < 100;
+SELECT name, stock FROM products WHERE stock < 100;
 ```
 
-### Question 6: Get employees with salary between 70000 and 85000
-**Task**: Retrieve employees with salaries between 70,000 and 85,000.  
-**Expected Output**: List of employee names and their salaries.
-
+### Question 6: Employees with Salary Range
+**Task:** Get employees with salary between 70000 and 85000
 ```sql
-SELECT name, salary
-FROM employee
+SELECT name, salary FROM employee
 WHERE salary BETWEEN 70000 AND 85000;
 ```
 
-### Question 7: Find all orders placed in January 2024
-**Task**: Find all orders placed in January 2024.  
-**Expected Output**: List of order IDs, customer IDs, order dates, and total amounts.
-
+### Question 7: January 2024 Orders
+**Task:** Find all orders placed in January 2024
 ```sql
 SELECT order_id, customer_id, order_date, total_amount
 FROM orders
-WHERE order_date BETWEEN '2024-01-01' AND '2024-01-31';
+WHERE EXTRACT(YEAR FROM order_date) = 2024
+  AND EXTRACT(MONTH FROM order_date) = 1;
 ```
 
-### Question 8: List products ordered by price in descending order
-**Task**: List all products ordered by price in descending order.  
-**Expected Output**: List of product names and their prices.
-
+### Question 8: Products Ordered by Price
+**Task:** List products ordered by price in descending order
 ```sql
-SELECT name, price
-FROM products
-ORDER BY price DESC;
+SELECT name, price FROM products ORDER BY price DESC;
 ```
 
-### Question 9: Find the top 3 highest paid employees
-**Task**: Retrieve the top 3 highest paid employees.  
-**Expected Output**: List of employee names and their salaries.
-
+### Question 9: Top 3 Highest Paid Employees
+**Task:** Find the top 3 highest paid employees
 ```sql
 SELECT name, salary
 FROM employee
@@ -250,339 +166,458 @@ ORDER BY salary DESC
 LIMIT 3;
 ```
 
-### Question 10: Get unique countries from the customers table
-**Task**: Retrieve unique countries from the `customers` table.  
-**Expected Output**: List of unique countries.
-
+### Question 10: Unique Countries
+**Task:** Get unique countries from the customers table
 ```sql
-SELECT DISTINCT country
-FROM customers;
+SELECT DISTINCT(country) FROM customers;
 ```
 
-### Question 11: Count the total number of employees
-**Task**: Count the total number of employees in the `employee` table.  
-**Expected Output**: Total count of employees.
+## Aggregation Functions
 
+### Question 11: Count Total Employees
 ```sql
-SELECT COUNT(*) AS employee_count
-FROM employee;
+SELECT COUNT(*) FROM employee;
 ```
 
-### Question 12: Find the average price of all products
-**Task**: Calculate the average price of all products.  
-**Expected Output**: Average price rounded to 2 decimal places.
-
+### Question 12: Average Product Price
 ```sql
-SELECT ROUND(AVG(price), 2) AS avg_price
-FROM products;
+SELECT ROUND(AVG(price), 2) AS avg_price FROM products;
 ```
 
-### Question 13: Get the maximum and minimum salary
-**Task**: Retrieve the maximum and minimum salaries from the `employee` table.  
-**Expected Output**: Maximum and minimum salary values.
-
+### Question 13: Maximum and Minimum Salary
 ```sql
-SELECT MAX(salary) AS max_salary, MIN(salary) AS min_salary
-FROM employee;
+SELECT MAX(salary) as max_salary, MIN(salary) as min_salary FROM employee;
 ```
 
-### Question 14: Calculate the total sales amount
-**Task**: Calculate the total sales amount from the `orders` table.  
-**Expected Output**: Sum of total_amount.
-
+### Question 14: Total Sales Amount
 ```sql
-SELECT SUM(total_amount) AS total_sales
-FROM orders;
+SELECT SUM(total_amount) as total_sales FROM orders;
 ```
 
-### Question 15: Count products by category
-**Task**: Count the number of products per category.  
-**Expected Output**: List of categories and their product counts, ordered by count descending.
-
+### Question 15: Products Count by Category
 ```sql
-SELECT category, COUNT(*) AS product_count
-FROM products
-GROUP BY category
+SELECT category, COUNT(*) as product_count 
+FROM products 
+GROUP BY category 
 ORDER BY product_count DESC;
 ```
 
-### Question 16: Find the average salary by department
-**Task**: Calculate the average salary by department.  
-**Expected Output**: List of departments and their average salaries, rounded to 2 decimal places.
-
+### Question 16: Average Salary by Department
 ```sql
-SELECT department, ROUND(AVG(salary), 2) AS salary_avg
+SELECT department, ROUND(AVG(salary), 2) as salary_avg 
 FROM employee
 GROUP BY department
 ORDER BY salary_avg DESC;
 ```
 
-### Question 17: Count the number of orders per customer
-**Task**: Count the number of orders per customer.  
-**Expected Output**: List of customer IDs and their order counts.
-
+### Question 17: Orders Count per Customer
 ```sql
-SELECT customer_id, COUNT(*) AS order_count
-FROM orders
-GROUP BY customer_id
+SELECT customer_id, COUNT(*) as order_count 
+FROM orders 
+GROUP BY customer_id 
 ORDER BY customer_id;
 ```
 
-### Question 18: Find the total inventory value
-**Task**: Calculate the total inventory value (price * stock).  
-**Expected Output**: Total inventory value rounded to 2 decimal places.
-
+### Question 18: Total Inventory Value
 ```sql
-SELECT ROUND(SUM(price * stock), 2) AS total_inventory_value
-FROM products;
+SELECT ROUND(SUM(price * stock), 2) as total_inventory_value FROM products;
 ```
 
-### Question 19: Get the earliest and latest hire dates
-**Task**: Retrieve the earliest and latest hire dates from the `employee` table.  
-**Expected Output**: Earliest and latest hire dates.
-
+### Question 19: Earliest and Latest Hire Dates
 ```sql
-SELECT MIN(hire_date) AS earliest_hire, MAX(hire_date) AS latest_hire
-FROM employee;
+SELECT MIN(hire_date) as earliest_hire, MAX(hire_date) as latest_hire FROM employee;
 ```
 
-### Question 20: Find the average order amount
-**Task**: Calculate the average order amount from the `orders` table.  
-**Expected Output**: Average total_amount rounded to 2 decimal places.
-
+### Question 20: Average Order Amount
 ```sql
-SELECT ROUND(AVG(total_amount), 2) AS avg_order_amount
-FROM orders;
+SELECT ROUND(AVG(total_amount), 2) FROM orders;
 ```
 
-### Question 21: List departments with more than 1 employee
-**Task**: List departments with more than one employee.  
-**Expected Output**: List of departments and their employee counts.
+## GROUP BY and HAVING
 
+### Question 21: Departments with More Than 1 Employee
 ```sql
-SELECT department, COUNT(*) AS employee_count
-FROM employee
-GROUP BY department
-HAVING COUNT(*) > 1
+SELECT department, COUNT(*) as employee_count 
+FROM employee 
+GROUP BY department 
+HAVING COUNT(*) > 1 
 ORDER BY employee_count;
 ```
 
-### Question 22: Show categories with average price above 200
-**Task**: Show product categories with an average price above 200.  
-**Expected Output**: List of categories and their average prices.
-
+### Question 22: Categories with Average Price Above 200
 ```sql
-SELECT category, ROUND(AVG(price), 2) AS avg_price
-FROM products
-GROUP BY category
-HAVING AVG(price) > 200
+SELECT category, ROUND(AVG(price), 2) as avg_price 
+FROM products 
+GROUP BY category 
+HAVING AVG(price) > 200 
 ORDER BY avg_price;
 ```
 
-### Question 23: Find customers who have spent more than 500 in total
-**Task**: Find customers with total spending greater than 500.  
-**Expected Output**: List of customer IDs and their total spending.
-
+### Question 23: Customers Who Spent More Than 500
 ```sql
-SELECT customer_id, SUM(total_amount) AS total_spent
-FROM orders
-GROUP BY customer_id
+SELECT customer_id, SUM(total_amount) 
+FROM orders 
+GROUP BY customer_id 
 HAVING SUM(total_amount) > 500;
 ```
 
-### Question 24: Show departments where the average salary is above 80000
-**Task**: Show departments with an average salary above 80,000.  
-**Expected Output**: List of departments and their average salaries.
-
+### Question 24: Departments with Average Salary Above 80000
 ```sql
-SELECT department, ROUND(AVG(salary), 2) AS avg_salary
-FROM employee
-GROUP BY department
+SELECT department, ROUND(AVG(salary), 2) as avg_salary 
+FROM employee 
+GROUP BY department 
 HAVING AVG(salary) > 80000;
 ```
 
-### Question 25: List categories with total stock less than 200
-**Task**: List product categories with total stock less than 200.  
-**Expected Output**: List of categories and their total stock.
-
+### Question 25: Categories with Total Stock Less Than 200
 ```sql
-SELECT category, SUM(stock) AS total_stock
-FROM products
-GROUP BY category
+SELECT category, SUM(stock) as total_stock 
+FROM products 
+GROUP BY category 
 HAVING SUM(stock) < 200;
 ```
 
-### Question 26: Find the month with the highest total sales in 2024
-**Task**: Find the month in 2024 with the highest total sales.  
-**Expected Output**: Month and total sales amount.
-
+### Question 26: Month with Highest Sales in 2024
 ```sql
-SELECT EXTRACT(MONTH FROM order_date) AS month, SUM(total_amount) AS total_sales
+SELECT 
+    EXTRACT(MONTH FROM order_date) as month,
+    SUM(total_amount) as total_sales
 FROM orders
 WHERE EXTRACT(YEAR FROM order_date) = 2024
 GROUP BY EXTRACT(MONTH FROM order_date)
 HAVING SUM(total_amount) = (
-    SELECT MAX(month_total)
-    FROM (
-        SELECT SUM(total_amount) AS month_total
-        FROM orders
+    SELECT MAX(month_total) FROM (
+        SELECT SUM(total_amount) as month_total FROM orders
         WHERE EXTRACT(YEAR FROM order_date) = 2024
         GROUP BY EXTRACT(MONTH FROM order_date)
-    ) AS sub
+    ) as sub
 );
 ```
 
-### Question 27: Show departments with employees hired in different years
-**Task**: Show departments with employees hired in different years.  
-**Expected Output**: List of departments and the count of distinct hire years.
-
+### Question 27: Departments with Employees Hired in Different Years
 ```sql
-SELECT department, COUNT(DISTINCT EXTRACT(YEAR FROM hire_date)) AS hire_years
-FROM employee
+SELECT department, COUNT(DISTINCT EXTRACT(YEAR FROM hire_date)) AS hire_years 
+FROM employee 
 GROUP BY department;
 ```
 
-### Question 28: Find the category with the highest maximum price
-**Task**: Find the product category with the highest maximum price.  
-**Expected Output**: Category and maximum price.
-
+### Question 28: Category with Highest Maximum Price
 ```sql
-SELECT category, MAX(price) AS max_price
-FROM products
-GROUP BY category
+SELECT category, MAX(price) as max_price 
+FROM products 
+GROUP BY category 
 HAVING MAX(price) = (SELECT MAX(price) FROM products);
 ```
 
-### Question 29: List customers with more than 1 order
-**Task**: List customers who have placed more than one order.  
-**Expected Output**: List of customer IDs and their order counts.
-
+### Question 29: Customers with More Than 1 Order
 ```sql
-SELECT customer_id, COUNT(*) AS order_count
-FROM orders
-GROUP BY customer_id
-HAVING COUNT(*) > 1;
+SELECT customer_id, COUNT(*) 
+FROM orders 
+GROUP BY customer_id 
+HAVING COUNT(customer_id) > 1;
 ```
 
-### Question 30: Find departments where all employees earn more than 60000
-**Task**: Find departments where all employees have a salary greater than 60,000.  
-**Expected Output**: List of departments and their minimum salaries.
-
+### Question 30: Departments Where All Employees Earn More Than 60000
 ```sql
-SELECT department, MIN(salary) AS min_salary
-FROM employee
-GROUP BY department
+SELECT department, MIN(salary) as min_salary 
+FROM employee 
+GROUP BY department 
 HAVING MIN(salary) > 60000;
 ```
 
-### Question 31: Show order details with customer names
-**Task**: Show order details including customer names.  
-**Expected Output**: Order ID, customer name, order date, and total amount.
+## JOIN Operations
 
+### Question 31: Order Details with Customer Names
 ```sql
-SELECT o.order_id, c.name AS customer_name, o.order_date, o.total_amount
+SELECT o.order_id, c.name as customer_name, o.order_date, o.total_amount
 FROM orders o
 JOIN customers c ON c.customer_id = o.customer_id;
 ```
 
-### Question 32: Display orders with product names and prices
-**Task**: Display orders with product names and prices.  
-**Expected Output**: Order ID, product name, quantity, price, and total amount.  
-**Note**: The original query had an error (joining on `o.product_id` instead of `o.order_id`). The corrected query is provided.
-
+### Question 32: Orders with Product Names and Prices
 ```sql
-SELECT o.order_id, p.name AS product_name, o.quantity, p.price, o.quantity * p.price AS total_amount
+SELECT o.order_id, p.name as product_name, o.quantity, p.price, o.quantity * p.price as total_amount
 FROM orders o
 JOIN products p ON p.product_id = o.product_id;
 ```
 
-### Question 33: List employees with their manager names
-**Task**: List employees with their manager names (assumes `manager` table exists).  
-**Expected Output**: Employee name and manager name.
-
+### Question 33: Employees with Manager Names
 ```sql
-SELECT e.name AS employee_name, m.name AS manager_name
+SELECT e.name as employee_name, m.name as manager_name
 FROM employee e
 LEFT JOIN manager m ON m.manager_id = e.manager_id;
 ```
 
-### Question 34: Show complete order information with customer and product details
-**Task**: Show complete order information including customer and product details.  
-**Expected Output**: Order ID, customer name, product name, quantity。那么
-
+### Question 34: Complete Order Information
 ```sql
-SELECT o.order_id AS "Order Id", c.name AS "Customer Name", p.name AS "Product Name", o.quantity AS "Quantity", p.price AS "Unit Price"
+SELECT
+    o.order_id as "Order Id",
+    c.name as "Customer Name",
+    p.name as "Product Name",
+    o.quantity as "Quantity",
+    p.price as "Unit Price"
 FROM orders o
 JOIN customers c ON o.customer_id = c.customer_id
 JOIN products p ON o.product_id = p.product_id;
 ```
 
-### Question 35: List all customers and their order count
-**Task**: List all customers and their order count, including those with no orders.  
-**Expected Output**: Customer ID, customer name, and order count.
-
+### Question 35: All Customers and Their Order Count
 ```sql
-SELECT c.customer_id, c.name AS customer_name, COUNT(o.order_id) AS order_count
+SELECT
+    c.customer_id as customer_id,
+    c.name as customer_name,
+    COUNT(o.order_id) AS order_count
 FROM customers c
 LEFT JOIN orders o ON c.customer_id = o.customer_id
-GROUP BY c.customer_id, c.name
+GROUP BY c.customer_id
 ORDER BY c.customer_id;
 ```
 
-### Question 36: Show products and their total sales quantity
-**Task**: Show products and their total sales quantity.  
-**Expected Output**: Product ID, product name, and total quantity sold.  
-**Note**: Modified to include aggregation for total quantity.
-
+### Question 36: Products and Total Sales Quantity
 ```sql
-SELECT p.product_id, p.name AS product_name, SUM(o.quantity) AS total_quantity
+SELECT
+    p.product_id,
+    p.name as product_name,
+    COALESCE(SUM(o.quantity), 0) as total_quantity
 FROM products p
 LEFT JOIN orders o ON o.product_id = p.product_id
 GROUP BY p.product_id, p.name
-ORDER BY p.product_id;
+ORDER BY total_quantity;
 ```
 
-### Question 37: Find employees who earn more than their department's average salary
-**Task**: Find employees who earn more than their department's average salary.  
-**Expected Output**: Employee name, salary, and department average salary.
-
+### Question 37: Employees Earning More Than Department Average
 ```sql
-SELECT e.name, e.salary, ROUND((SELECT AVG(salary) FROM employee WHERE department = e.department), 2) AS dept_avg_salary
+SELECT
+    e.name,
+    e.salary,
+    ROUND((SELECT AVG(salary) FROM employee WHERE department = e.department), 2) as dept_avg_salary
 FROM employee e
 WHERE e.salary > (SELECT AVG(salary) FROM employee WHERE department = e.department)
 ORDER BY dept_avg_salary DESC;
 ```
 
-### Question 38: List customers from USA who have placed orders
-**Task**: List customers from the USA who have placed orders.  
-**Expected Output**: Customer name, country, and total quantity ordered.
-
+### Question 38: USA Customers Who Placed Orders
 ```sql
-SELECT c.name, c.country, COUNT(o.quantity) AS total_quantity
+SELECT
+    c.name,
+    c.country,
+    COUNT(o.quantity) as total_orders
 FROM customers c
 JOIN orders o ON c.customer_id = o.customer_id
 WHERE c.country = 'USA'
 GROUP BY c.customer_id, c.name, c.country;
 ```
 
-### Question 39: Find products that have never been ordered
-**Task**: Find products that have never been ordered.  
-**Expected Output**: Product name and category.  
-**Note**: The original query had an error (incorrect join condition). The corrected query uses a LEFT JOIN.
-
+### Question 39: Products Never Ordered
 ```sql
-SELECT p.name AS product_name, p.category AS product_category
+SELECT
+    p.name as product_name,
+    p.category as product_category
 FROM products p
 LEFT JOIN orders o ON o.product_id = p.product_id
 WHERE o.product_id IS NULL;
 ```
 
-### Question 40: Show the salary difference between each employee and the highest paid employee in their department
-**Task**: Show the salary difference between each employee and the highest paid employee in their department.  
-**Expected Output**: Employee name, salary, department, and salary difference from the highest paid employee.
-
+### Question 40: Salary Difference from Department Maximum
 ```sql
-SELECT e.name, e.salary, e.department, (SELECT MAX(salary) FROM employee WHERE department = e.department) - e.salary AS salary_difference
-FROM employee e
-ORDER BY e.department, salary_difference;
+SELECT 
+    e.name,
+    e.department,
+    e.salary,
+    (SELECT MAX(salary) FROM employee WHERE department = e.department) as max_salary,
+    ((SELECT MAX(salary) FROM employee WHERE department = e.department) - e.salary) as diff_salary
+FROM employee e;
 ```
+
+## UPDATE Operations
+
+### Question 41: Increase IT Department Salaries by 5%
+```sql
+UPDATE employee 
+SET salary = salary * 1.05 
+WHERE department = 'IT';
+```
+
+### Question 42: Reduce Laptop Stock by 10 Units
+```sql
+UPDATE products 
+SET stock = stock - 10 
+WHERE name = 'Laptop';
+```
+
+### Question 43: Update Sarah Johnson's Department
+```sql
+UPDATE employee
+SET department = 'Operations'
+WHERE name = 'Sarah Johnson';
+```
+
+### Question 44: Apply 10% Discount to Furniture
+```sql
+UPDATE products
+SET price = price * 0.9
+WHERE category = 'Furniture';
+```
+
+### Question 45: Convert Customer Emails to Lowercase
+```sql
+UPDATE customers
+SET email = LOWER(email);
+```
+
+### Question 46: Set Manager for IT Employees Without Manager
+```sql
+UPDATE employee
+SET manager_id = 5
+WHERE department = 'IT' AND manager_id IS NULL;
+```
+
+### Question 47: Increase Prices for Low Stock Items
+```sql
+UPDATE products
+SET price = price * 1.15
+WHERE stock < 50;
+```
+
+### Question 48: Add Tax to Orders Over $200
+```sql
+UPDATE orders
+SET total_amount = ROUND(total_amount * 1.10, 2)
+WHERE total_amount > 200;
+```
+
+### Question 49: Update Hire Date for Employees Without Manager
+```sql
+UPDATE employee
+SET hire_date = CURRENT_DATE
+WHERE manager_id IS NULL;
+```
+
+### Question 50: Update City for Non-USA Customers
+```sql
+UPDATE customers
+SET city = 'Unknown'
+WHERE country != 'USA';
+```
+
+## Advanced Queries
+
+### Question 51: Total Sales Amount by Department
+```sql
+SELECT d.dept_name, SUM(s.quantity * s.unit_price) as total_sales 
+FROM sales s
+JOIN employee e ON e.emp_id = s.employee_id
+JOIN departments d ON d.dept_id = e.department_id
+GROUP BY d.dept_name
+ORDER BY d.dept_name;
+```
+
+### Question 52: Electronics Customers and Their Spending
+```sql
+SELECT c.name, c.email, SUM(o.quantity * p.price) as total_amount 
+FROM orders o
+JOIN customers c ON c.customer_id = o.customer_id
+JOIN products p ON p.product_id = o.product_id
+WHERE p.category = 'Electronics'
+GROUP BY c.email, c.name;
+```
+
+### Question 53: Employee Sales Value (Including Zero Sales)
+```sql
+SELECT e.emp_id, e.name, COALESCE(SUM(s.quantity * p.price), 0) as total_sales 
+FROM employee e
+LEFT JOIN sales s ON s.employee_id = e.emp_id
+LEFT JOIN products p ON p.product_id = s.product_id
+GROUP BY e.emp_id, e.name
+ORDER BY total_sales DESC;
+```
+
+### Question 54: Current Stock from Inventory Movements
+```sql
+SELECT p.name, COALESCE(SUM(
+    CASE
+        WHEN im.movement_type = 'IN' THEN im.quantity
+        WHEN im.movement_type = 'OUT' THEN -im.quantity
+        ELSE 0
+    END
+), 0) as calculated_stock 
+FROM products p
+LEFT JOIN inventory_movements im ON im.product_id = p.product_id
+GROUP BY p.name
+ORDER BY calculated_stock DESC;
+```
+
+### Question 55: Most Popular Product by Country
+```sql
+SELECT c.country, p.name as product_name, SUM(o.quantity) as total_quantity
+FROM orders o
+JOIN products p ON p.product_id = o.product_id
+JOIN customers c ON c.customer_id = o.customer_id
+GROUP BY c.country, p.name
+HAVING SUM(o.quantity) = (
+    SELECT MAX(sub.total_quantity)
+    FROM (
+        SELECT SUM(o2.quantity) as total_quantity
+        FROM orders o2
+        JOIN customers c2 ON c2.customer_id = o2.customer_id
+        WHERE c2.country = c.country 
+        GROUP BY o2.product_id
+    ) sub
+)
+ORDER BY c.country;
+```
+
+### Question 56: Department Statistics
+```sql
+SELECT department, COUNT(*) as employee_count, ROUND(AVG(salary), 2) as avg_salary 
+FROM employee
+GROUP BY department
+ORDER BY employee_count;
+```
+
+### Question 57: Top Salesperson by Total Sales
+```sql
+SELECT e.name, COUNT(s.sale_id) as sales_count, SUM(s.quantity * s.unit_price) AS total_sales  
+FROM sales s
+JOIN employee e ON e.emp_id = s.employee_id
+GROUP BY s.employee_id, e.name
+ORDER BY total_sales DESC
+LIMIT 1;
+```
+
+### Question 58: Products Ordered by Multiple Countries
+```sql
+SELECT p.name as product_name, COUNT(DISTINCT c.country) as country_count
+FROM orders o
+JOIN products p ON p.product_id = o.product_id
+JOIN customers c ON c.customer_id = o.customer_id
+GROUP BY p.product_id, p.name
+HAVING COUNT(DISTINCT c.country) > 1
+ORDER BY country_count DESC;
+```
+
+## Key SQL Concepts Covered
+
+- **Basic Queries**: SELECT, WHERE, ORDER BY, LIMIT
+- **Aggregation**: COUNT, SUM, AVG, MAX, MIN
+- **Grouping**: GROUP BY, HAVING
+- **Joins**: INNER JOIN, LEFT JOIN, RIGHT JOIN, FULL OUTER JOIN
+- **Subqueries**: Correlated and non-correlated subqueries
+- **Window Functions**: Advanced analytical queries
+- **Data Manipulation**: UPDATE, INSERT, DELETE
+- **Data Types**: Handling dates, numeric data, strings
+- **Constraints**: Foreign keys, unique constraints, check constraints
+
+## Practice Tips
+
+1. **Start with Basic Queries**: Master SELECT statements before moving to complex joins
+2. **Understand Data Relationships**: Study the table schemas and relationships
+3. **Practice Aggregations**: Learn when to use GROUP BY vs simple aggregation
+4. **Master Joins**: Understand different join types and when to use each
+5. **Use Subqueries Wisely**: Know when a subquery is more efficient than a join
+6. **Optimize Queries**: Consider indexing and query performance
+7. **Test Edge Cases**: Consider NULL values and empty result sets
+
+---
+
+*This collection covers fundamental to advanced SQL concepts. Practice each question multiple times with different datasets to master SQL querying skills.*
